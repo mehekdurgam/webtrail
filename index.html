@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>College Club Event Calendar</title>
+    <title>Campus Connect | College Event Calendar</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
@@ -36,27 +38,18 @@
     </div>
 
     <div id="loginModal" class="modal">
-    <h2>Club President Login</h2>
-    <p style="font-size: 12px; color: #666;">Password: college123</p>
-    
-    <select id="loginClub">
-        <option value="" disabled selected>Select Your Club</option>
-        <option value="Coding Club">Coding Club</option>
-        <option value="Music Club">Music Club</option>
-        <option value="Sports Club">Sports Club</option>
-        <option value="Drama Society">Drama Society</option>
-        <option value="Art Club">Art Club</option>
-    </select>
-
-    <input id="loginUser" placeholder="President Username" />
-    <input id="loginPass" type="password" placeholder="Password" />
-    <button class="action-btn" onclick="handleAuth()">Login</button>
-    <button class="close-btn" onclick="closeLoginModal()">Cancel</button>
-</div>
+        <h2>Club President Login</h2>
+        <select id="loginClub">
+            <option value="" disabled selected>Loading Clubs...</option>
+        </select>
+        <input id="loginUser" placeholder="President Username" />
+        <input id="loginPass" type="password" placeholder="Password" />
+        <button class="action-btn" onclick="handleAuth()">Login</button>
+        <button class="close-btn" onclick="closeAllModals()">Cancel</button>
+    </div>
 
     <div id="newEventModal" class="modal">
         <h2 id="modalDateTitle">Events</h2>
-        
         <div id="existing-events-list"></div>
 
         <div id="admin-only-form" class="hidden">
@@ -66,8 +59,7 @@
             <input id="eventTitleInput" placeholder="Event Name (e.g., Annual Fest)" />
             <button class="action-btn success" onclick="saveEvent()">Save Event</button>
         </div>
-        
-        <button class="close-btn" onclick="closeModal()">Close</button>
+        <button class="close-btn" onclick="closeAllModals()">Close</button>
     </div>
 
     <div id="modalBackdrop" onclick="closeAllModals()"></div>

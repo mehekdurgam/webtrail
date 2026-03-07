@@ -7,7 +7,7 @@
 }
 
 body {
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     background-color: var(--light);
 }
@@ -26,11 +26,15 @@ header {
 #calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
 #monthDisplay { font-size: 28px; font-weight: bold; color: var(--primary); }
 
-.nav-buttons button { padding: 8px 15px; cursor: pointer; background: var(--accent); color: white; border: none; border-radius: 5px; }
+.nav-buttons button { 
+    padding: 10px 20px; cursor: pointer; background: var(--accent); 
+    color: white; border: none; border-radius: 5px; font-weight: bold;
+}
 
 #weekdays {
     display: grid; grid-template-columns: repeat(7, 1fr);
-    background: #f0f0f0; font-weight: bold; text-align: center; padding: 10px 0;
+    background: #f0f0f0; font-weight: bold; text-align: center; padding: 15px 0;
+    border-radius: 5px 5px 0 0;
 }
 
 #calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: #ddd; }
@@ -40,38 +44,49 @@ header {
 .padding { background: #eee; cursor: default; }
 
 .event-label {
-    font-size: 11px; padding: 3px 6px; margin-top: 5px; border-radius: 3px;
-    background: var(--accent); color: white; overflow: hidden; text-overflow: ellipsis;
+    font-size: 11px; padding: 4px 8px; margin-top: 5px; border-radius: 4px;
+    background: var(--accent); color: white; white-space: nowrap; 
+    overflow: hidden; text-overflow: ellipsis;
 }
 
-.club-tag { font-weight: bold; font-size: 9px; display: block; opacity: 0.8; text-transform: uppercase; }
+.club-tag { font-weight: bold; font-size: 9px; display: block; opacity: 0.9; text-transform: uppercase; }
 
 /* Modals */
 .modal {
     display: none; position: fixed; top: 50%; left: 50%;
     transform: translate(-50%, -50%); background: white;
-    padding: 25px; width: 350px; border-radius: 10px; z-index: 100;
+    padding: 30px; width: 90%; max-width: 400px; border-radius: 12px; 
+    z-index: 100; box-shadow: 0 5px 25px rgba(0,0,0,0.2);
 }
 
 #modalBackdrop {
     display: none; position: fixed; top: 0; left: 0;
-    width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 50;
+    width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); z-index: 50;
 }
 
-/* Update your existing input, select rule or add this */
 input, select { 
-    width: 100%; 
-    padding: 10px; 
-    margin: 8px 0; 
-    box-sizing: border-box; 
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: white; /* Ensures select isn't grey by default */
-}
-.event-item {
-    background: #f8f9fa; padding: 10px; margin: 10px 0;
-    border-left: 5px solid var(--accent); display: flex; justify-content: space-between; align-items: center;
+    width: 100%; padding: 12px; margin: 10px 0; 
+    border: 1px solid #ccc; border-radius: 6px; font-size: 14px;
 }
 
-.del-btn { background: var(--danger); color: white; border: none; padding: 5px 8px; cursor: pointer; border-radius: 3px; font-size: 11px; }
+.action-btn { 
+    width: 100%; padding: 12px; border: none; border-radius: 6px; 
+    background: var(--accent); color: white; font-weight: bold; cursor: pointer;
+}
+
+.action-btn.success { background: var(--success); margin-top: 10px; }
+
+.close-btn { 
+    width: 100%; margin-top: 10px; background: none; border: none; 
+    color: #888; cursor: pointer; text-decoration: underline; 
+}
+
+.event-item {
+    background: #f8f9fa; padding: 12px; margin: 10px 0;
+    border-left: 5px solid var(--accent); display: flex; 
+    justify-content: space-between; align-items: center; border-radius: 4px;
+}
+
+.del-btn { background: var(--danger); color: white; border: none; padding: 6px 12px; cursor: pointer; border-radius: 4px; }
 .hidden { display: none !important; }
+.logout-btn { background: #444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-left: 10px;}
