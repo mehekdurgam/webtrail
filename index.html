@@ -29,11 +29,9 @@
                 <button id="nextButton">Next</button>
             </div>
         </div>
-
         <div id="weekdays">
             <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
         </div>
-
         <div id="calendar"></div>
     </div>
 
@@ -57,6 +55,18 @@
             <h3>Add New Event</h3>
             <p id="posting-as" style="font-weight: bold; color: #3498db;"></p>
             <input id="eventTitleInput" placeholder="Event Name (e.g., Annual Fest)" />
+            
+            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                <div style="flex: 1;">
+                    <label style="font-size: 12px; color: #666;">Start Time</label>
+                    <input type="time" id="startTime" required>
+                </div>
+                <div style="flex: 1;">
+                    <label style="font-size: 12px; color: #666;">End Time</label>
+                    <input type="time" id="endTime" required>
+                </div>
+            </div>
+
             <button class="action-btn success" onclick="saveEvent()">Save Event</button>
         </div>
         <button class="close-btn" onclick="closeAllModals()">Close</button>

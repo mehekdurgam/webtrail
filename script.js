@@ -1,13 +1,12 @@
 // --- 1. FIREBASE CONFIGURATION ---
-// REPLACE THESE VALUES WITH YOUR PROJECT'S ACTUAL CONFIG
-    const firebaseConfig = {
-  apiKey: "AIzaSyApSHpM9dtU_SVAPAiS_ZYXaFOQ6JqQd_U",
-  authDomain: "clubcalender-cdb0a.firebaseapp.com",
-  projectId: "clubcalender-cdb0a",
-  storageBucket: "clubcalender-cdb0a.firebasestorage.app",
-  messagingSenderId: "462718778492",
-  appId: "1:462718778492:web:c871750b6f12344fbe9df9",
-  measurementId: "G-G0YDY06DM1"
+const firebaseConfig = {
+    apiKey: "AIzaSyApSHpM9dtU_SVAPAiS_ZYXaFOQ6JqQd_U",
+    authDomain: "clubcalender-cdb0a.firebaseapp.com",
+    projectId: "clubcalender-cdb0a",
+    storageBucket: "clubcalender-cdb0a.firebasestorage.app",
+    messagingSenderId: "462718778492",
+    appId: "1:462718778492:web:c871750b6f12344fbe9df9",
+    measurementId: "G-G0YDY06DM1"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -62,9 +61,9 @@ async function handleAuth() {
         document.getElementById('admin-controls').classList.remove('hidden');
         document.getElementById('admin-msg').innerText = `${user} (${club})`;
         closeAllModals();
-        load(); // Re-render to show admin features
+        load();
     } else {
-        alert("Authentication failed. Please check credentials.");
+        alert("Authentication failed.");
     }
 }
 
@@ -92,7 +91,6 @@ function load() {
 
     const calendar = document.getElementById('calendar');
     
-    // Use onSnapshot for Real-Time Database updates
     db.collection('events').onSnapshot((snapshot) => {
         const allEvents = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         calendar.innerHTML = ''; 
@@ -149,8 +147,16 @@ function renderEventItems(dayEvents) {
         item.className = 'event-item';
         const canDelete = currentUser.isLoggedIn && (e.club === currentUser.clubName);
         
+        // Use the formatTime12hr function for both start and end times
+        const startTimeFormatted = formatTime12hr(e.startTime);
+        const endTimeFormatted = formatTime12hr(e.endTime);
+        const timeText = `${startTimeFormatted} - ${endTimeFormatted}`;
+
         item.innerHTML = `
-            <div><strong>${e.club}</strong>: ${e.title}</div>
+            <div class="event-info">
+                <strong>${e.club}</strong>: ${e.title}
+                <span class="event-time-span">⏰ ${timeText}</span>
+            </div>
             ${canDelete ? `<button class="del-btn" onclick="deleteEvent('${e.id}')">Delete</button>` : ''}
         `;
         list.appendChild(item);
@@ -159,15 +165,27 @@ function renderEventItems(dayEvents) {
 
 async function saveEvent() {
     const titleInput = document.getElementById('eventTitleInput');
-    if (titleInput.value && currentUser.isLoggedIn) {
+    const startTimeInput = document.getElementById('startTime');
+    const endTimeInput = document.getElementById('endTime');
+
+    if (titleInput.value && startTimeInput.value && endTimeInput.value && currentUser.isLoggedIn) {
         await db.collection('events').add({
             date: clickedDate,
             title: titleInput.value,
+            startTime: startTimeInput.value,
+            endTime: endTimeInput.value,
             club: currentUser.clubName,
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
+        
+        // Reset inputs
         titleInput.value = '';
+        startTimeInput.value = '';
+        endTimeInput.value = '';
+        
         closeAllModals();
+    } else {
+        alert("Please fill in the event name and both start/end times.");
     }
 }
 
@@ -188,5 +206,15 @@ function closeAllModals() {
 document.getElementById('backButton').onclick = () => { nav--; load(); };
 document.getElementById('nextButton').onclick = () => { nav++; load(); };
 
-// Initial Load
 load();
+function formatTime12hr(timeString) {
+    if (!timeString) return "Time not set";
+    
+    let [hours, minutes] = timeString.split(':');
+    let ampm = hours >= 12 ? 'PM' : 'AM';
+    
+    hours = hours % 12;
+    hours = hours ? hours : 12; // The hour '0' should be '12'
+    
+    return `${hours}:${minutes} ${ampm}`;
+}
